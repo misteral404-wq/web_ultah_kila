@@ -55,11 +55,10 @@
             opacity: 0.7;
         }
 
-        /* WADAH FOTO JAMET KETIKA SLIDER DIGESER */
         #ghost-container {
             position: fixed;
             inset: 0;
-            pointer-events: none; /* Penting! Supaya gak ngeblok sentuhan jari di slider */
+            pointer-events: none; 
             z-index: 9999; 
             overflow: hidden;
         }
@@ -75,7 +74,7 @@
             opacity: 0;
             animation: zoomJamet 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
             box-shadow: 0 10px 30px rgba(255, 77, 109, 0.5);
-            filter: sepia(0.2) contrast(1.1); /* Kasih efek agak buluk dikit */
+            filter: sepia(0.2) contrast(1.1); 
         }
 
         @keyframes zoomJamet {
@@ -104,6 +103,12 @@
             opacity: 1;
             visibility: visible;
         }
+        
+        #screen-5 {
+            -webkit-overflow-scrolling: auto; 
+            scroll-behavior: smooth; /* Bikin scroll otomatisnya mulus */
+        }
+
         .screen-content {
             max-width: 450px;
             width: 100%;
@@ -163,6 +168,19 @@
             background-color: var(--pink-medium);
             border-color: var(--pink-medium);
             transform: scale(1.05);
+        }
+
+        /* ANIMASI MUNCUL TOMBOL BENAR */
+        .btn-correct-hidden {
+            display: none;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn-correct-show {
+            display: block !important;
+            opacity: 1 !important;
+            transform: scale(1) !important;
         }
 
         .btn-outline {
@@ -358,39 +376,31 @@
 </head>
 <body>
 
-    <!-- BGM -->
     <audio id="bgm" loop>
         <source src="birthday.mp3" type="audio/mpeg">
     </audio>
     
-    <!-- AUDIO UNTUK TOMBOL -->
     <audio id="sound-start">
-        <source src="siu.mp3" type="audio/mpeg">
+        <source src="YOUR_SOUND_MULAI.mp3" type="audio/mpeg">
     </audio>
     <audio id="sound-kila">
         <source src="erere.mp3" type="audio/mpeg">
     </audio>
     <audio id="sound-wrong">
-        <source src="oof.mp3" type="audio/mpeg">
+        <source src="YOUR_SOUND_SALAH.mp3" type="audio/mpeg">
     </audio>
-    
-    <!-- AUDIO SPESIAL SLIDER JOKOWI -->
     <audio id="sound-jokowi" loop>
         <source src="jokowi.mp3" type="audio/mpeg">
     </audio>
-
-    <!-- AUDIO TOMBOL KABUR -->
     <audio id="sound-dodge">
         <source src="wait.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- WADAH FOTO JAMET -->
     <div id="ghost-container"></div>
 
     <div class="moon"></div>
     <canvas id="confetti-canvas"></canvas>
 
-    <!-- Custom Modal -->
     <div id="custom-modal" class="modal-overlay">
         <div class="modal-box">
             <h3 style="font-size: 2rem; margin-bottom: 10px;">Eits! 🚫</h3>
@@ -415,7 +425,8 @@
             <p class="subtitle">Hari ini siapa ya yang lagi Ultah?</p>
             
             <div class="btn-group btn-group-row">
-                <button onclick="playSound('sound-kila'); nextScreen(1)" class="btn-primary">Kila Erere</button>
+                <!-- Tombol disembunyikan dulu pakai class btn-correct-hidden -->
+                <button id="btn-correct-1" onclick="playSound('sound-kila'); nextScreen(1)" class="btn-primary btn-correct-hidden">Kila Erere</button>
                 <button id="btn-dodge-1" class="btn-outline btn-dodge">Aqilah Naurah R</button>
             </div>
         </div>
@@ -439,7 +450,8 @@
             <p class="subtitle">Terus, siapa yang hari ini tambah slebew? ✨</p>
             
             <div class="btn-group btn-group-row">
-                <button onclick="playSound('sound-kila'); nextScreen(3)" class="btn-primary">Kila Erere 😌</button>
+                <!-- Tombol disembunyikan dulu -->
+                <button id="btn-correct-2" onclick="playSound('sound-kila'); nextScreen(3)" class="btn-primary btn-correct-hidden">Kila Erere 😌</button>
                 <button id="btn-dodge-2" class="btn-outline btn-dodge">Bukan saya</button>
             </div>
         </div>
@@ -448,29 +460,25 @@
     <div id="screen-4" class="screen">
         <div class="screen-content">
             <h2 class="title" style="font-size: 2.5rem;">Security Check! 🔐</h2>
-            <p class="subtitle">Geser sampe mentok, gak geser bisulan!</p>
+            <p class="subtitle">Geser sampe mentok, pelan-pelan aja ntar nyangkut!</p>
             
-            <!-- Slider 1 -->
             <div id="slider-sec-1" class="slider-section show">
-                <p class="tease-text">Gampang kok? 🤪</p>
+                <p class="tease-text">Coba geser... kok berat? 🤪</p>
                 <input type="range" id="slider-1" min="0" max="100" value="0">
             </div>
 
-            <!-- Slider 2 -->
             <div id="slider-sec-2" class="slider-section">
                 <p class="tease-text">Yah kok miring kayak otak AL</p>
                 <input type="range" id="slider-2" class="rotate-15" min="0" max="100" value="0">
             </div>
 
-            <!-- Slider 3 -->
             <div id="slider-sec-3" class="slider-section">
                 <p class="tease-text">Miring lagi awas pusing 😵</p>
                 <input type="range" id="slider-3" class="rotate-minus-15" min="0" max="100" value="0">
             </div>
 
-            <!-- Slider 4 -->
             <div id="slider-sec-4" class="slider-section">
-                <p class="tease-text">Yah kebalik? kapan ya Kila balik menyukai ku? 🙃</p>
+                <p class="tease-text">Terakhir nih! (Yah kebalik?? kapan kila balik menyukai ku? 🙃)</p>
                 <input type="range" id="slider-4" class="rotate-180" min="0" max="100" value="0">
             </div>
 
@@ -495,15 +503,15 @@
 
             <div id="polaroid-gallery" class="gallery">
                 <div class="polaroid">
-                    <img src="kila4.jpeg" alt="Foto 1">
+                    <img src="https://placehold.co/200x250/ffe6ea/ff4d6d?text=Photo+1" alt="Foto 1">
                     <p>Lucunya 🤍</p>
                 </div>
                 <div class="polaroid">
-                    <img src="kila3.jpeg" alt="Foto 2">
+                    <img src="https://placehold.co/200x250/ffc2d1/ff4d6d?text=Photo+2" alt="Foto 2">
                     <p>Lucu banget! ✨</p>
                 </div>
                 <div class="polaroid">
-                    <img src="kila2.jpeg" alt="Foto 3">
+                    <img src="https://placehold.co/200x250/ff8fa3/ffffff?text=Photo+3" alt="Foto 3">
                     <p>Lucu banget yaolo! 🌸</p>
                 </div>
             </div>
@@ -511,7 +519,6 @@
     </div>
 
     <script>
-        // --- FUNGSI AUDIO ---
         function playSound(audioId) {
             const sound = document.getElementById(audioId);
             if (sound) {
@@ -520,29 +527,22 @@
             }
         }
 
-        // --- FUNGSI MEMUNCULKAN FOTO JAMET KETIKA SLIDER DIGESER ---
         const ghostContainer = document.getElementById('ghost-container');
         function spawnJamet() {
             const img = document.createElement('img');
-            
-            // 👇 MASUKIN NAMA FILE FOTO JAMET KILA DI SINI 👇
-            img.src = 'kila1.jpeg'; 
-            
+            img.src = 'jamet.jpg'; 
             img.className = 'ghost-jamet';
             
-            // Posisi random (menyebar di area tengah layar)
             const randomX = Math.floor(Math.random() * 80) - 40; 
             const randomY = Math.floor(Math.random() * 80) - 40;
             img.style.marginLeft = `${randomX}vw`;
             img.style.marginTop = `${randomY}vh`;
 
-            // Ukuran sedikit dirandom
             const randomScale = 0.6 + (Math.random() * 0.4);
             img.style.width = `${200 * randomScale}px`;
 
             ghostContainer.appendChild(img);
 
-            // Hilangkan dari sistem setelah animasi ngezoom selesai
             setTimeout(() => {
                 if(img.parentNode) {
                     img.remove();
@@ -550,15 +550,12 @@
             }, 1500);
         }
 
-        // --- LOGIK AUDIO & SLIDER "SERET/BERAT" ---
         const sliderJokowiAudio = document.getElementById('sound-jokowi');
         
         function makeSliderHeavyAndGhosty(slider, nextSection) {
-            // Setup memori awal
             slider.dataset.lastVal = 0;
             slider.dataset.lastGhost = 0;
 
-            // Memutar audio jokowi ketika disentuh
             slider.addEventListener('mousedown', () => sliderJokowiAudio.play().catch(e=>{}));
             slider.addEventListener('touchstart', () => sliderJokowiAudio.play().catch(e=>{}), {passive: true});
             
@@ -570,27 +567,22 @@
             slider.addEventListener('touchend', stopSliderAudio);
             slider.addEventListener('mouseleave', stopSliderAudio); 
 
-            // Logik bikin slidernya seret & ngeluarin pop up
             slider.addEventListener('input', (e) => {
                 let val = parseFloat(slider.value);
                 let lastVal = parseFloat(slider.dataset.lastVal);
                 
-                // SISTEM PENAHAN: Cuma boleh maju 2 angka per gesekan!
-                // Kalau digeser cepat ke angka 50, dipaksa mundur lagi ke angka pelan
                 if (val > lastVal + 2) {
                     val = lastVal + 2;
                     slider.value = val;
                 }
                 slider.dataset.lastVal = val;
 
-                // MUNCULIN POP-UP JAMET SETIAP MAJU 5 ANGKA
                 let lastGhost = parseFloat(slider.dataset.lastGhost);
                 if (val > lastGhost + 4) {
                     spawnJamet();
-                    slider.dataset.lastGhost = val; // Catat kapan terakhir jamet muncul
+                    slider.dataset.lastGhost = val; 
                 }
 
-                // CEK JIKA SUDAH SELESAI SAMPAI UJUNG
                 if (val >= 99) {
                     slider.disabled = true;
                     slider.value = 100;
@@ -623,14 +615,11 @@
         const sec3 = document.getElementById('slider-sec-3');
         const sec4 = document.getElementById('slider-sec-4');
 
-        // Pasangkan efek berat dan hantu jamet ke semua slider
         makeSliderHeavyAndGhosty(s1, sec2);
         makeSliderHeavyAndGhosty(s2, sec3);
         makeSliderHeavyAndGhosty(s3, sec4);
         makeSliderHeavyAndGhosty(s4, 'final');
-        // --------------------------------------------------
 
-        // Screen Navigation
         function startApp() {
             const bgm = document.getElementById('bgm');
             bgm.volume = 0.2; 
@@ -649,7 +638,6 @@
             }, 600);
         }
 
-        // Custom Modal Logic
         const modal = document.getElementById('custom-modal');
         const modalMsg = document.getElementById('modal-msg');
 
@@ -662,15 +650,26 @@
             modal.classList.remove('show');
         }
 
-        // Dodging Button Logic
-        function setupDodger(buttonId) {
-            const btn = document.getElementById(buttonId);
+        // --- UPDATE: FUNGSI DODGER (SEKARANG TAHU KAPAN MUNCULIN TOMBOL BENAR) ---
+        function setupDodger(dodgeBtnId, correctBtnId) {
+            const btn = document.getElementById(dodgeBtnId);
+            const correctBtn = document.getElementById(correctBtnId);
             let isDodging = false;
+            let dodgeCount = 0; // Menghitung berapa kali udah dikejar
             
             function moveButton(e) {
                 if (e) e.preventDefault(); 
                 
                 playSound('sound-dodge');
+                dodgeCount++; // Tambah hitungan setiap dia ngejar
+                
+                // MUNCULKAN TOMBOL YANG BENAR SETELAH 3 KALI KABUR
+                if (dodgeCount === 3 && correctBtn) {
+                    correctBtn.style.display = 'block';
+                    setTimeout(() => {
+                        correctBtn.classList.add('btn-correct-show');
+                    }, 50); // Kasih jeda dikit biar animasinya jalan
+                }
                 
                 if (!isDodging) {
                     btn.style.width = btn.offsetWidth + 'px';
@@ -695,8 +694,10 @@
             btn.addEventListener('touchstart', moveButton, { passive: false });
         }
 
-        setupDodger('btn-dodge-1');
-        setupDodger('btn-dodge-2');
+        // Jalankan fungsi ke tombol lari 1 dan 2
+        setupDodger('btn-dodge-1', 'btn-correct-1');
+        setupDodger('btn-dodge-2', 'btn-correct-2');
+        // ------------------------------------------------------------------------
 
         function openFinalGreeting() {
             document.getElementById('screen-4').classList.remove('active');
@@ -707,7 +708,7 @@
             }, 600);
         }
         
-        const finalMessage = "Selamat ulang tahun, Kila! 🎉 Semoga panjang umur, rezekinya lancar, dan pastinya makin slebew terus tiap harinya! AL doain ya semua yang Kila semogakan cepet terwujud. Jangan lupa senyum terus tiap hari, mokasi udah jadi wong yang cutenya kebangetan. Semoga soon yo kito nyeblak bareng! I wish you all the best! 🌸🤍";
+        const finalMessage = "Selamat ulang tahun, Kila! 🎉 Semoga panjang umur, rezekinya lancar, dan pastinya makin slebew nian tiap harinya! AL doain semua yang Kila semogakan cepet terwujud. Jangan lupa senyum terus tiap hari, mokasi udah jadi wong cutenya kebangetan. Semoga soon ya kito nyeblak bareng! I wish you all the best! 🌸🤍";
         
         function startTypewriter() {
             const container = document.getElementById('message-container');
@@ -728,9 +729,20 @@
                     container.classList.remove('is-typing');
                     setTimeout(() => { pen.style.opacity = '0'; }, 1000);
                     
+                    // --- UPDATE: AUTO SCROLL KE BAGIAN FOTO SETELAH NGETIK KELAR ---
                     setTimeout(() => {
-                        document.getElementById('polaroid-gallery').style.opacity = '1';
+                        const gallery = document.getElementById('polaroid-gallery');
+                        const screen5 = document.getElementById('screen-5');
+                        
+                        gallery.style.opacity = '1';
+                        
+                        // Perintah otomatis scroll down secara mulus
+                        screen5.scrollTo({
+                            top: gallery.offsetTop - 50, // Otomatis ke arah galeri polaroid
+                            behavior: 'smooth'
+                        });
                     }, 500);
+                    // ----------------------------------------------------------------
                 }
             }
             type();
