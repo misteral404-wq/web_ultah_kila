@@ -552,7 +552,7 @@
         const ghostContainer = document.getElementById('ghost-container');
         function spawnJamet() {
             const img = document.createElement('img');
-            img.src = 'jamet.jpg'; 
+            img.src = 'kila1.jpeg'; 
             img.className = 'ghost-jamet';
             
             const randomX = Math.floor(Math.random() * 80) - 40; 
@@ -593,8 +593,8 @@
                 let val = parseFloat(slider.value);
                 let lastVal = parseFloat(slider.dataset.lastVal);
                 
-                if (val > lastVal + 1) {
-                    val = lastVal + 1;
+                if (val > lastVal + 0.5) {
+                    val = lastVal + 0.5;
                     slider.value = val;
                 }
                 slider.dataset.lastVal = val;
