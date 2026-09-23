@@ -482,10 +482,10 @@
     <div id="screen-4" class="screen">
         <div class="screen-content">
             <h2 class="title" style="font-size: 2.5rem;">Security Check! 🔐</h2>
-            <p class="subtitle">Geser sampe mentok, pelan-pelan aja ntar nyangkut!</p>
+            <p class="subtitle">Geser sampe mentok, gak geser bisulan!</p>
             
             <div id="slider-sec-1" class="slider-section show">
-                <p class="tease-text">Coba geser... kok berat? 🤪</p>
+                <p class="tease-text">Gampang kan? 🤪</p>
                 <input type="range" id="slider-1" min="0" max="100" value="0">
             </div>
 
@@ -593,8 +593,8 @@
                 let val = parseFloat(slider.value);
                 let lastVal = parseFloat(slider.dataset.lastVal);
                 
-                if (val > lastVal + 0.5) {
-                    val = lastVal + 0.5;
+                if (val > lastVal + 0.8) {
+                    val = lastVal + 0.8;
                     slider.value = val;
                 }
                 slider.dataset.lastVal = val;
@@ -776,10 +776,24 @@
         }
 
         // --- MENGHENTIKAN EFEK JEDAG JEDUG SAAT LAGUNYA HABIS ---
+        // --- MENGHENTIKAN EFEK JEDAG JEDUG SAAT LAGUNYA HABIS ---
         const soundParty = document.getElementById('sound-party');
+        let partyPlayCount = 0; // Bikin memori penghitung
+
         soundParty.addEventListener('ended', () => {
-            const gallery = document.getElementById('polaroid-gallery');
-            gallery.classList.remove('jedag-jedug-active'); // Animasi hilang, kembali kalem
+            partyPlayCount++; // Tambah 1 setiap lagunya habis
+            
+            if (partyPlayCount < 2) {
+                // Kalau baru 1 kali habis, putar lagi dari awal!
+                soundParty.currentTime = 0;
+                soundParty.play().catch(e => console.log(e));
+            } else {
+                // Kalau udah 2 kali habis, berhentikan goyangannya
+                const gallery = document.getElementById('polaroid-gallery');
+                gallery.classList.remove('jedag-jedug-active'); 
+                partyPlayCount = 0; // Reset memori
+            }
+        });
             
             // Opsi: Kalau pengen lagu BGM-nya main lagi pelan-pelan
             // document.getElementById('bgm').play(); 
