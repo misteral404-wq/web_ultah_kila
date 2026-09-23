@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Special Birthday 🌸✨</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --pink-bg: #fff0f3;
+            --pink-dark: #ff4d6d;
+            --pink-medium: #ff8fa3;
+            --pink-light: #ffc2d1;
+            --white: #ffffff;
+            --text-main: #590d22;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--pink-bg);
+            background-image: url('https://www.transparenttextures.com/patterns/cherry-blossom.png');
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            touch-action: pan-y;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, .cursive-text, .polaroid p {
+            font-family: 'Dancing Script', cursive;
+            color: var(--pink-dark);
+            text-shadow: 0 2px 5px rgba(255, 77, 109, 0.2);
+            font-weight: 700;
+        }
+
+        .moon {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            box-shadow: inset -15px -15px 0 0 var(--pink-medium);
+            transform: rotate(-20deg);
+            z-index: 0;
+            opacity: 0.7;
+        }
+
+        /* WADAH FOTO JAMET KETIKA SLIDER DIGESER */
+        #ghost-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none; /* Penting! Supaya gak ngeblok sentuhan jari di slider */
+            z-index: 9999; 
+            overflow: hidden;
+        }
+
+        .ghost-jamet {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            border-radius: 15px;
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+            animation: zoomJamet 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.5);
+            filter: sepia(0.2) contrast(1.1); /* Kasih efek agak buluk dikit */
+        }
+
+        @keyframes zoomJamet {
+            0% { transform: translate(-50%, -50%) scale(0.3) rotate(-10deg); opacity: 0; }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { transform: translate(-50%, -50%) scale(3) rotate(10deg); opacity: 0; }
+        }
+
+        .screen {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease-in-out, visibility 0.6s;
+            z-index: 10;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .screen-content {
+            max-width: 450px;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .title { font-size: 3rem; margin-bottom: 15px; line-height: 1.2; }
+        .subtitle { font-size: 1.1rem; color: #8a3c55; margin-bottom: 30px; line-height: 1.6; }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            align-items: center;
+            position: relative;
+            min-height: 120px;
+        }
+        
+        .btn-group-row {
+            flex-direction: row;
+            justify-content: center;
+            flex-wrap: nowrap;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .btn-group-row button {
+            flex: 1;
+            width: 100%;
+            max-width: none;
+            padding: 12px 10px;
+            font-size: 0.95rem;
+            line-height: 1.3;
+        }
+
+        button {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            padding: 14px 35px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+            width: 80%;
+            max-width: 250px;
+        }
+
+        .btn-primary {
+            background-color: var(--pink-dark);
+            color: var(--white);
+            border: 2px solid var(--pink-dark);
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+        }
+        .btn-primary:hover {
+            background-color: var(--pink-medium);
+            border-color: var(--pink-medium);
+            transform: scale(1.05);
+        }
+
+        .btn-outline {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--pink-dark);
+            border: 2px solid var(--pink-dark);
+            backdrop-filter: blur(5px);
+        }
+        .btn-outline:hover {
+            background-color: var(--pink-light);
+        }
+
+        .btn-dodge {
+            position: relative;
+            transition: top 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), left 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .slider-section {
+            width: 100%;
+            margin: 20px 0;
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        .slider-section.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .tease-text {
+            font-size: 0.9rem;
+            color: var(--pink-dark);
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]:focus { outline: none; }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 28px;
+            width: 28px;
+            border-radius: 50%;
+            background: var(--pink-dark);
+            cursor: pointer;
+            margin-top: -10px;
+            box-shadow: 0 0 15px rgba(255, 77, 109, 0.5);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: rgba(255, 77, 109, 0.2);
+            border-radius: 4px;
+        }
+        input[type=range]:disabled::-webkit-slider-thumb {
+            background: var(--pink-light);
+            box-shadow: none;
+        }
+
+        .rotate-15 { transform: rotate(15deg); margin: 30px 0; }
+        .rotate-minus-15 { transform: rotate(-15deg); margin: 30px 0; }
+        .rotate-180 { transform: rotate(180deg); margin: 30px 0; }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.85);
+            border: 2px solid var(--pink-light);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.15);
+            backdrop-filter: blur(10px);
+            margin-bottom: 40px;
+            min-height: 250px;
+            text-align: left;
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        .cursive-text.large {
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            display: inline;
+        }
+
+        .feather-pen {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            vertical-align: bottom;
+            margin-left: 2px;
+            margin-bottom: -10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .is-typing .feather-pen {
+            opacity: 1;
+            animation: writing 0.2s infinite alternate;
+        }
+        
+        @keyframes writing {
+            0% { transform: rotate(0deg) translate(0, 0); }
+            100% { transform: rotate(-25deg) translate(-5px, -5px); }
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            opacity: 0;
+            transition: opacity 1s ease 0.5s;
+            padding-bottom: 60px; 
+        }
+        .polaroid {
+            background: white;
+            padding: 10px 10px 45px 10px;
+            box-shadow: 0 4px 15px rgba(89, 13, 34, 0.15);
+            transition: transform 0.3s ease, z-index 0.3s ease;
+            position: relative;
+            width: 140px;
+        }
+        .polaroid img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            background-color: #ffe6ea;
+        }
+        .polaroid p {
+            color: var(--pink-dark);
+            text-align: center;
+            font-size: 1.4rem;
+            position: absolute;
+            bottom: 10px;
+            width: calc(100% - 20px);
+            margin: 0;
+        }
+        .polaroid:nth-child(1) { transform: rotate(-5deg); }
+        .polaroid:nth-child(2) { transform: rotate(4deg); margin-top: 15px; }
+        .polaroid:nth-child(3) { transform: rotate(-3deg); }
+        .polaroid:hover { transform: scale(1.1) rotate(0deg) !important; z-index: 20; }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 240, 243, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        .modal-box {
+            background: var(--white);
+            border: 2px solid var(--pink-medium);
+            border-radius: 20px;
+            padding: 35px 25px;
+            max-width: 320px;
+            width: 90%;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(255, 77, 109, 0.2);
+        }
+        .modal-overlay.show { opacity: 1; pointer-events: auto; }
+        .modal-overlay.show .modal-box { transform: scale(1) translateY(0); }
+        .modal-text { font-size: 1.1rem; margin-bottom: 25px; line-height: 1.5; color: var(--text-main); }
+
+        #confetti-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        @media (min-width: 768px) {
+            .title { font-size: 4.5rem; }
+            .polaroid { width: 170px; }
+            .polaroid img { height: 170px; }
+            .cursive-text.large { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BGM -->
+    <audio id="bgm" loop>
+        <source src="birthday.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- AUDIO UNTUK TOMBOL -->
+    <audio id="sound-start">
+        <source src="siu.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sound-kila">
+        <source src="erere.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sound-wrong">
+        <source src="oof.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- AUDIO SPESIAL SLIDER JOKOWI -->
+    <audio id="sound-jokowi" loop>
+        <source src="jokowi.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- AUDIO TOMBOL KABUR -->
+    <audio id="sound-dodge">
+        <source src="wait.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- WADAH FOTO JAMET -->
+    <div id="ghost-container"></div>
+
+    <div class="moon"></div>
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Custom Modal -->
+    <div id="custom-modal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 style="font-size: 2rem; margin-bottom: 10px;">Eits! 🚫</h3>
+            <p id="modal-msg" class="modal-text"></p>
+            <button onclick="playSound('sound-wrong'); closeModal()" class="btn-primary" style="width: 100%;">Iya maaf 😔</button>
+        </div>
+    </div>
+
+    <div id="screen-0" class="screen active">
+        <div class="screen-content">
+            <h1 class="title" style="font-size: 3.5rem;">Alooo Kilaaaa 🌸</h1>
+            <p class="subtitle">Gedein dulu volume hpnya baru klik mulai yak.</p>
+            <button onclick="playSound('sound-start'); startApp()" class="btn-primary" style="padding: 16px 40px; font-size: 1.15rem;">
+                Mulai 🎵
+            </button>
+        </div>
+    </div>
+
+    <div id="screen-1" class="screen">
+        <div class="screen-content">
+            <h2 class="title">Ciyeeeeeee!</h2>
+            <p class="subtitle">Hari ini siapa ya yang lagi Ultah?</p>
+            
+            <div class="btn-group btn-group-row">
+                <button onclick="playSound('sound-kila'); nextScreen(1)" class="btn-primary">Kila Erere</button>
+                <button id="btn-dodge-1" class="btn-outline btn-dodge">Aqilah Naurah R</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-2" class="screen">
+        <div class="screen-content">
+            <h1 class="title" style="font-size: 2.5rem;">Jawab Jujur!</h1>
+            <p class="subtitle">Coba jawab pertanyaan ini dari hati yang paling dalam:<br><br><b>Siapa yang diam-diam suka kangen? 👀</b></p>
+            
+            <div class="btn-group">
+                <button onclick="playSound('sound-wrong'); showModal('Masak aku doang... <br>Pilih yang bener! 🥺')" class="btn-outline">AL</button>
+                <button onclick="playSound('sound-kila'); nextScreen(2)" class="btn-primary">Kila Erere</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-3" class="screen">
+        <div class="screen-content">
+            <h2 class="title" style="font-size: 2.5rem;">Satu Lagi deh...</h2>
+            <p class="subtitle">Terus, siapa yang hari ini tambah slebew? ✨</p>
+            
+            <div class="btn-group btn-group-row">
+                <button onclick="playSound('sound-kila'); nextScreen(3)" class="btn-primary">Kila Erere 😌</button>
+                <button id="btn-dodge-2" class="btn-outline btn-dodge">Bukan saya</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-4" class="screen">
+        <div class="screen-content">
+            <h2 class="title" style="font-size: 2.5rem;">Security Check! 🔐</h2>
+            <p class="subtitle">Geser sampe mentok, gak geser bisulan!</p>
+            
+            <!-- Slider 1 -->
+            <div id="slider-sec-1" class="slider-section show">
+                <p class="tease-text">Gampang kok? 🤪</p>
+                <input type="range" id="slider-1" min="0" max="100" value="0">
+            </div>
+
+            <!-- Slider 2 -->
+            <div id="slider-sec-2" class="slider-section">
+                <p class="tease-text">Yah kok miring kayak otak AL</p>
+                <input type="range" id="slider-2" class="rotate-15" min="0" max="100" value="0">
+            </div>
+
+            <!-- Slider 3 -->
+            <div id="slider-sec-3" class="slider-section">
+                <p class="tease-text">Miring lagi awas pusing 😵</p>
+                <input type="range" id="slider-3" class="rotate-minus-15" min="0" max="100" value="0">
+            </div>
+
+            <!-- Slider 4 -->
+            <div id="slider-sec-4" class="slider-section">
+                <p class="tease-text">Yah kebalik? kapan ya Kila balik menyukai ku? 🙃</p>
+                <input type="range" id="slider-4" class="rotate-180" min="0" max="100" value="0">
+            </div>
+
+            <button id="btn-slider-next" onclick="playSound('sound-start'); openFinalGreeting()" class="btn-primary" style="opacity: 0; pointer-events: none; transition: opacity 0.5s; margin-top: 30px;">
+                Yeay buka Kejutannya! 🎁
+            </button>
+        </div>
+    </div>
+
+    <div id="screen-5" class="screen" style="justify-content: flex-start; padding-top: 10vh; overflow-y: auto;">
+        <div class="screen-content" style="max-width: 650px;">
+            <h1 class="title" style="font-size: 3.5rem; margin-bottom: 30px;">Happy Birthday! 🎉</h1>
+
+            <div class="message-box" id="message-container">
+                <span id="typed-text" class="cursive-text large"></span>
+                <svg id="feather-pen" class="feather-pen" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--pink-dark)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+                    <line x1="16" y1="8" x2="2" y2="22"></line>
+                    <line x1="17.5" y1="15" x2="9" y2="15"></line>
+                </svg>
+            </div>
+
+            <div id="polaroid-gallery" class="gallery">
+                <div class="polaroid">
+                    <img src="kila4.jpeg" alt="Foto 1">
+                    <p>Lucunya 🤍</p>
+                </div>
+                <div class="polaroid">
+                    <img src="kila3.jpeg" alt="Foto 2">
+                    <p>Lucu banget! ✨</p>
+                </div>
+                <div class="polaroid">
+                    <img src="kila2.jpeg" alt="Foto 3">
+                    <p>Lucu banget yaolo! 🌸</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- FUNGSI AUDIO ---
+        function playSound(audioId) {
+            const sound = document.getElementById(audioId);
+            if (sound) {
+                sound.currentTime = 0; 
+                sound.play().catch(e => console.log("Audio play blocked", e));
+            }
+        }
+
+        // --- FUNGSI MEMUNCULKAN FOTO JAMET KETIKA SLIDER DIGESER ---
+        const ghostContainer = document.getElementById('ghost-container');
+        function spawnJamet() {
+            const img = document.createElement('img');
+            
+            // 👇 MASUKIN NAMA FILE FOTO JAMET KILA DI SINI 👇
+            img.src = 'kila1.jpeg'; 
+            
+            img.className = 'ghost-jamet';
+            
+            // Posisi random (menyebar di area tengah layar)
+            const randomX = Math.floor(Math.random() * 80) - 40; 
+            const randomY = Math.floor(Math.random() * 80) - 40;
+            img.style.marginLeft = `${randomX}vw`;
+            img.style.marginTop = `${randomY}vh`;
+
+            // Ukuran sedikit dirandom
+            const randomScale = 0.6 + (Math.random() * 0.4);
+            img.style.width = `${200 * randomScale}px`;
+
+            ghostContainer.appendChild(img);
+
+            // Hilangkan dari sistem setelah animasi ngezoom selesai
+            setTimeout(() => {
+                if(img.parentNode) {
+                    img.remove();
+                }
+            }, 1500);
+        }
+
+        // --- LOGIK AUDIO & SLIDER "SERET/BERAT" ---
+        const sliderJokowiAudio = document.getElementById('sound-jokowi');
+        
+        function makeSliderHeavyAndGhosty(slider, nextSection) {
+            // Setup memori awal
+            slider.dataset.lastVal = 0;
+            slider.dataset.lastGhost = 0;
+
+            // Memutar audio jokowi ketika disentuh
+            slider.addEventListener('mousedown', () => sliderJokowiAudio.play().catch(e=>{}));
+            slider.addEventListener('touchstart', () => sliderJokowiAudio.play().catch(e=>{}), {passive: true});
+            
+            const stopSliderAudio = () => {
+                sliderJokowiAudio.pause();
+                sliderJokowiAudio.currentTime = 0;
+            };
+            slider.addEventListener('mouseup', stopSliderAudio);
+            slider.addEventListener('touchend', stopSliderAudio);
+            slider.addEventListener('mouseleave', stopSliderAudio); 
+
+            // Logik bikin slidernya seret & ngeluarin pop up
+            slider.addEventListener('input', (e) => {
+                let val = parseFloat(slider.value);
+                let lastVal = parseFloat(slider.dataset.lastVal);
+                
+                // SISTEM PENAHAN: Cuma boleh maju 2 angka per gesekan!
+                // Kalau digeser cepat ke angka 50, dipaksa mundur lagi ke angka pelan
+                if (val > lastVal + 2) {
+                    val = lastVal + 2;
+                    slider.value = val;
+                }
+                slider.dataset.lastVal = val;
+
+                // MUNCULIN POP-UP JAMET SETIAP MAJU 5 ANGKA
+                let lastGhost = parseFloat(slider.dataset.lastGhost);
+                if (val > lastGhost + 4) {
+                    spawnJamet();
+                    slider.dataset.lastGhost = val; // Catat kapan terakhir jamet muncul
+                }
+
+                // CEK JIKA SUDAH SELESAI SAMPAI UJUNG
+                if (val >= 99) {
+                    slider.disabled = true;
+                    slider.value = 100;
+                    
+                    stopSliderAudio();
+
+                    if (nextSection === 'final') {
+                        const btnFinal = document.getElementById('btn-slider-next');
+                        btnFinal.style.opacity = '1';
+                        btnFinal.style.pointerEvents = 'auto';
+                        
+                        setTimeout(() => {
+                            document.getElementById('screen-4').scrollTo({
+                                top: document.getElementById('screen-4').scrollHeight,
+                                behavior: 'smooth'
+                            });
+                        }, 300);
+                    } else if (nextSection) {
+                        nextSection.classList.add('show');
+                    }
+                }
+            });
+        }
+
+        const s1 = document.getElementById('slider-1');
+        const s2 = document.getElementById('slider-2');
+        const s3 = document.getElementById('slider-3');
+        const s4 = document.getElementById('slider-4');
+        const sec2 = document.getElementById('slider-sec-2');
+        const sec3 = document.getElementById('slider-sec-3');
+        const sec4 = document.getElementById('slider-sec-4');
+
+        // Pasangkan efek berat dan hantu jamet ke semua slider
+        makeSliderHeavyAndGhosty(s1, sec2);
+        makeSliderHeavyAndGhosty(s2, sec3);
+        makeSliderHeavyAndGhosty(s3, sec4);
+        makeSliderHeavyAndGhosty(s4, 'final');
+        // --------------------------------------------------
+
+        // Screen Navigation
+        function startApp() {
+            const bgm = document.getElementById('bgm');
+            bgm.volume = 0.2; 
+            bgm.play().catch(e => console.log("Audio autplay was prevented:", e));
+            
+            document.getElementById('screen-0').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('screen-1').classList.add('active');
+            }, 600);
+        }
+
+        function nextScreen(current) {
+            document.getElementById(`screen-${current}`).classList.remove('active');
+            setTimeout(() => {
+                document.getElementById(`screen-${current + 1}`).classList.add('active');
+            }, 600);
+        }
+
+        // Custom Modal Logic
+        const modal = document.getElementById('custom-modal');
+        const modalMsg = document.getElementById('modal-msg');
+
+        function showModal(msg) {
+            modalMsg.innerHTML = msg;
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+        }
+
+        // Dodging Button Logic
+        function setupDodger(buttonId) {
+            const btn = document.getElementById(buttonId);
+            let isDodging = false;
+            
+            function moveButton(e) {
+                if (e) e.preventDefault(); 
+                
+                playSound('sound-dodge');
+                
+                if (!isDodging) {
+                    btn.style.width = btn.offsetWidth + 'px';
+                    btn.style.height = btn.offsetHeight + 'px';
+                    btn.style.position = 'fixed';
+                    btn.style.zIndex = '999';
+                    isDodging = true;
+                }
+                
+                const padding = 30; 
+                const maxX = window.innerWidth - btn.offsetWidth - padding;
+                const maxY = window.innerHeight - btn.offsetHeight - padding;
+                
+                const newX = Math.max(padding, Math.floor(Math.random() * maxX));
+                const newY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+                btn.style.left = `${newX}px`;
+                btn.style.top = `${newY}px`;
+            }
+
+            btn.addEventListener('mouseover', moveButton);
+            btn.addEventListener('touchstart', moveButton, { passive: false });
+        }
+
+        setupDodger('btn-dodge-1');
+        setupDodger('btn-dodge-2');
+
+        function openFinalGreeting() {
+            document.getElementById('screen-4').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('screen-5').classList.add('active');
+                startConfetti();
+                setTimeout(startTypewriter, 1000);
+            }, 600);
+        }
+        
+        const finalMessage = "Selamat ulang tahun, Kila! 🎉 Semoga panjang umur, rezekinya lancar, dan pastinya makin slebew terus tiap harinya! AL doain ya semua yang Kila semogakan cepet terwujud. Jangan lupa senyum terus tiap hari, mokasi udah jadi wong yang cutenya kebangetan. Semoga soon yo kito nyeblak bareng! I wish you all the best! 🌸🤍";
+        
+        function startTypewriter() {
+            const container = document.getElementById('message-container');
+            const textSpan = document.getElementById('typed-text');
+            const pen = document.getElementById('feather-pen');
+            
+            container.classList.add('is-typing');
+            
+            let i = 0;
+            function type() {
+                if (i < finalMessage.length) {
+                    textSpan.appendChild(document.createTextNode(finalMessage.charAt(i)));
+                    textSpan.appendChild(pen); 
+                    
+                    i++;
+                    setTimeout(type, Math.random() * 60 + 30); 
+                } else {
+                    container.classList.remove('is-typing');
+                    setTimeout(() => { pen.style.opacity = '0'; }, 1000);
+                    
+                    setTimeout(() => {
+                        document.getElementById('polaroid-gallery').style.opacity = '1';
+                    }, 500);
+                }
+            }
+            type();
+        }
+
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.size = Math.random() * 8 + 5;
+                this.speedY = Math.random() * 3 + 1.5;
+                this.speedX = Math.random() * 2 - 1;
+                this.color = ['#ff4d6d', '#ff8fa3', '#ffffff'][Math.floor(Math.random() * 3)];
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 5 - 2.5;
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.rotation += this.rotationSpeed;
+                if (this.y > canvas.height) {
+                    this.y = -this.size;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation * Math.PI / 180);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = 0.8;
+                ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+                ctx.restore();
+            }
+        }
+
+        function startConfetti() {
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { 
+                    p.update(); 
+                    p.draw(); 
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+</body>
+</html>
