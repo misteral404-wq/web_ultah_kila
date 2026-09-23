@@ -593,8 +593,8 @@
                 let val = parseFloat(slider.value);
                 let lastVal = parseFloat(slider.dataset.lastVal);
                 
-                if (val > lastVal + 2) {
-                    val = lastVal + 2;
+                if (val > lastVal + 1) {
+                    val = lastVal + 1;
                     slider.value = val;
                 }
                 slider.dataset.lastVal = val;
