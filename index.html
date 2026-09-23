@@ -106,7 +106,7 @@
         
         #screen-5 {
             -webkit-overflow-scrolling: auto; 
-            scroll-behavior: smooth; /* Bikin scroll otomatisnya mulus */
+            scroll-behavior: smooth;
         }
 
         .screen-content {
@@ -170,7 +170,6 @@
             transform: scale(1.05);
         }
 
-        /* ANIMASI MUNCUL TOMBOL BENAR */
         .btn-correct-hidden {
             display: none;
             opacity: 0;
@@ -328,6 +327,27 @@
         .polaroid:nth-child(3) { transform: rotate(-3deg); }
         .polaroid:hover { transform: scale(1.1) rotate(0deg) !important; z-index: 20; }
 
+        /* ========================================= */
+        /* CSS UNTUK ANIMASI JEDAG JEDUG FOTO POLAROID */
+        /* ========================================= */
+        @keyframes jedagJedug1 {
+            0%, 100% { transform: scale(1) rotate(-5deg); box-shadow: 0 4px 15px rgba(89, 13, 34, 0.15); }
+            50% { transform: scale(1.15) rotate(-2deg); box-shadow: 0 15px 35px rgba(255, 77, 109, 0.6); }
+        }
+        @keyframes jedagJedug2 {
+            0%, 100% { transform: scale(1) rotate(4deg); box-shadow: 0 4px 15px rgba(89, 13, 34, 0.15); }
+            50% { transform: scale(1.15) rotate(1deg); box-shadow: 0 15px 35px rgba(255, 77, 109, 0.6); }
+        }
+        @keyframes jedagJedug3 {
+            0%, 100% { transform: scale(1) rotate(-3deg); box-shadow: 0 4px 15px rgba(89, 13, 34, 0.15); }
+            50% { transform: scale(1.15) rotate(0deg); box-shadow: 0 15px 35px rgba(255, 77, 109, 0.6); }
+        }
+
+        .jedag-jedug-active .polaroid:nth-child(1) { animation: jedagJedug1 0.3s infinite alternate !important; z-index: 15; }
+        .jedag-jedug-active .polaroid:nth-child(2) { animation: jedagJedug2 0.35s infinite alternate !important; z-index: 15; }
+        .jedag-jedug-active .polaroid:nth-child(3) { animation: jedagJedug3 0.3s infinite alternate-reverse !important; z-index: 15; }
+        /* ========================================= */
+
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -395,6 +415,10 @@
     <audio id="sound-dodge">
         <source src="wait.mp3" type="audio/mpeg">
     </audio>
+    <!-- 👇 AUDIO BARU UNTUK PART JEDAG JEDUG 👇 -->
+    <audio id="sound-party">
+        <source src="jedag-jedug.mp3" type="audio/mpeg">
+    </audio>
 
     <div id="ghost-container"></div>
 
@@ -425,7 +449,6 @@
             <p class="subtitle">Hari ini siapa ya yang lagi Ultah?</p>
             
             <div class="btn-group btn-group-row">
-                <!-- Tombol disembunyikan dulu pakai class btn-correct-hidden -->
                 <button id="btn-correct-1" onclick="playSound('sound-kila'); nextScreen(1)" class="btn-primary btn-correct-hidden">Kila Erere</button>
                 <button id="btn-dodge-1" class="btn-outline btn-dodge">Aqilah Naurah R</button>
             </div>
@@ -450,7 +473,6 @@
             <p class="subtitle">Terus, siapa yang hari ini tambah slebew? ✨</p>
             
             <div class="btn-group btn-group-row">
-                <!-- Tombol disembunyikan dulu -->
                 <button id="btn-correct-2" onclick="playSound('sound-kila'); nextScreen(3)" class="btn-primary btn-correct-hidden">Kila Erere 😌</button>
                 <button id="btn-dodge-2" class="btn-outline btn-dodge">Bukan saya</button>
             </div>
@@ -478,7 +500,7 @@
             </div>
 
             <div id="slider-sec-4" class="slider-section">
-                <p class="tease-text">Terakhir nih! (Yah kebalik?? kapan kila balik menyukai ku? 🙃)</p>
+                <p class="tease-text">Yah kebalik? kapan ya Kila balik menyukai ku? 🙃</p>
                 <input type="range" id="slider-4" class="rotate-180" min="0" max="100" value="0">
             </div>
 
@@ -530,7 +552,7 @@
         const ghostContainer = document.getElementById('ghost-container');
         function spawnJamet() {
             const img = document.createElement('img');
-            img.src = 'kila1.jpeg'; 
+            img.src = 'jamet.jpg'; 
             img.className = 'ghost-jamet';
             
             const randomX = Math.floor(Math.random() * 80) - 40; 
@@ -650,25 +672,23 @@
             modal.classList.remove('show');
         }
 
-        // --- UPDATE: FUNGSI DODGER (SEKARANG TAHU KAPAN MUNCULIN TOMBOL BENAR) ---
         function setupDodger(dodgeBtnId, correctBtnId) {
             const btn = document.getElementById(dodgeBtnId);
             const correctBtn = document.getElementById(correctBtnId);
             let isDodging = false;
-            let dodgeCount = 0; // Menghitung berapa kali udah dikejar
+            let dodgeCount = 0; 
             
             function moveButton(e) {
                 if (e) e.preventDefault(); 
                 
                 playSound('sound-dodge');
-                dodgeCount++; // Tambah hitungan setiap dia ngejar
+                dodgeCount++; 
                 
-                // MUNCULKAN TOMBOL YANG BENAR SETELAH 3 KALI KABUR
                 if (dodgeCount === 3 && correctBtn) {
                     correctBtn.style.display = 'block';
                     setTimeout(() => {
                         correctBtn.classList.add('btn-correct-show');
-                    }, 50); // Kasih jeda dikit biar animasinya jalan
+                    }, 50); 
                 }
                 
                 if (!isDodging) {
@@ -694,10 +714,8 @@
             btn.addEventListener('touchstart', moveButton, { passive: false });
         }
 
-        // Jalankan fungsi ke tombol lari 1 dan 2
         setupDodger('btn-dodge-1', 'btn-correct-1');
         setupDodger('btn-dodge-2', 'btn-correct-2');
-        // ------------------------------------------------------------------------
 
         function openFinalGreeting() {
             document.getElementById('screen-4').classList.remove('active');
@@ -708,7 +726,7 @@
             }, 600);
         }
         
-        const finalMessage = "Selamat ulang tahun, Kila! 🎉 Semoga panjang umur, rezekinya lancar, dan pastinya makin slebew terus tiap harinya! AL doain semua yang Kila semogakan cepet terwujud. Jangan lupa senyum terus tiap hari, mokasi udah jadi wong yang cutenya kebangetan. Semoga soon yo kito nyeblak bareng! I wish you all the best! 🌸🤍";
+        const finalMessage = "Selamat ulang tahun, Kila! 🎉 Semoga panjang umur, rezekinya lancar, dan pastinya makin slebew terus tiap harinya! AL doain semua yang Kila semogakan cepet terwujud. Jangan lupa senyum terus ya tiap hari, mokasi udah jadi wong yang cutenya kebangetan. Semoga soon yo kito nyeblak bareng! I wish you all the best! 🌸🤍";
         
         function startTypewriter() {
             const container = document.getElementById('message-container');
@@ -729,24 +747,44 @@
                     container.classList.remove('is-typing');
                     setTimeout(() => { pen.style.opacity = '0'; }, 1000);
                     
-                    // --- UPDATE: AUTO SCROLL KE BAGIAN FOTO SETELAH NGETIK KELAR ---
                     setTimeout(() => {
                         const gallery = document.getElementById('polaroid-gallery');
                         const screen5 = document.getElementById('screen-5');
                         
                         gallery.style.opacity = '1';
                         
-                        // Perintah otomatis scroll down secara mulus
                         screen5.scrollTo({
-                            top: gallery.offsetTop - 50, // Otomatis ke arah galeri polaroid
+                            top: gallery.offsetTop - 50, 
                             behavior: 'smooth'
                         });
+
+                        // --- LOGIK BARU: BGM MATI, GANTI LAGU PARTY & FOTO JEDAG JEDUG ---
+                        const bgm = document.getElementById('bgm');
+                        bgm.pause(); // Matikan lagu awal
+
+                        const soundParty = document.getElementById('sound-party');
+                        soundParty.volume = 0.5; // Bisa dinaikin misal 0.8 kalo kurang kenceng
+                        soundParty.play().catch(e => console.log("Gagal play jedag-jedug", e));
+
+                        gallery.classList.add('jedag-jedug-active'); // Mulai goyang
+                        // ------------------------------------------------------------------
+
                     }, 500);
-                    // ----------------------------------------------------------------
                 }
             }
             type();
         }
+
+        // --- MENGHENTIKAN EFEK JEDAG JEDUG SAAT LAGUNYA HABIS ---
+        const soundParty = document.getElementById('sound-party');
+        soundParty.addEventListener('ended', () => {
+            const gallery = document.getElementById('polaroid-gallery');
+            gallery.classList.remove('jedag-jedug-active'); // Animasi hilang, kembali kalem
+            
+            // Opsi: Kalau pengen lagu BGM-nya main lagi pelan-pelan
+            // document.getElementById('bgm').play(); 
+        });
+        // --------------------------------------------------------
 
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
